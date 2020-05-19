@@ -5,7 +5,7 @@ import atexit
 
 # create a flask app
 app = Flask(__name__)
-# set app configuration and database
+# set app configuration and MYSQL database setting
 app.config['SECRET_KEY'] ='33191185783744c6a127b20c396a67fb'
 app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://root:@localhost:3306/smart_news'
 db = SQLAlchemy(app)
