@@ -73,7 +73,6 @@ class NewsSources(db.Model):
         # get news source by name if exist, if not, create a new one and return id
         source_name = news_feed['post_source_name'].strip()
         source_logo = news_feed['post_source_logo'].strip()
-
         source_exist = NewsSources.query.filter_by(logo=source_logo).first()
         if source_exist:
             return source_exist.id
