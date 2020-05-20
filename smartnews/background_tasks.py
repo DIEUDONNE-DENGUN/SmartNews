@@ -28,7 +28,7 @@ scheduler.start()
 # add web crawling news task to scheduler
 scheduler.add_job(run_webcrawler, 'interval', minutes=2)
 # add an another job to start getting news feeds from newsorg
-scheduler.add_job(get_news_from_news_api, 'interval', minutes=2)
+scheduler.add_job(get_news_from_news_api, 'interval', minutes=3)
 
 # Shut down the scheduler when exiting the app
 atexit.register(lambda: scheduler.shutdown())

@@ -34,7 +34,7 @@ class NewsOrgApiService:
             for news_feed in api_news_feeds:
                 news_feed_object = jsons.dump(NewsFeed(news_feed, news_tags))
                 news_feeds_list.append(news_feed_object)
-                print(news_feed)
+                # print(news_feed)
 
         return news_feeds_list
 
@@ -64,7 +64,7 @@ class NewsOrgApiService:
             
         except self.request_client.exceptions.HTTPError as http_error:
             print(http_error.response.text)
-
+   
 
 # News feed
 class NewsFeed:

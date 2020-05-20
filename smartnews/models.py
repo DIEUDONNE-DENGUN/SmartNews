@@ -18,7 +18,7 @@ class NewsFeeds(db.Model):
     def save_news_feeds(self, news_feed, country):
         
         # check if we previously had a news with feeds by title
-        news_feed_exist = self.news_feed_exist_by_name(news_feed['post_title'])
+        news_feed_exist = self.news_feed_exist_by_name(news_feed)
         if news_feed_exist:
             return ""
         # News feed is a new one, save it and its details in the db
@@ -28,7 +28,7 @@ class NewsFeeds(db.Model):
         self.post_url = news_feed['post_url']
         self.post_source_id = NewsSources().get_news_source_id_by_name(
             news_feed)  # Find news_feed source by id
-        self.post_country_id = 1
+        self.post_country_id = country
         self.post_date = news_feed['post_date']
         self.created_at = datetime.now()
         # save the news feed main data
@@ -53,9 +53,12 @@ class NewsFeeds(db.Model):
 
     # check if a news feed about to be saved exist already by
     def news_feed_exist_by_name(self, news_feed):
+        post_title = news_feed['post_title'].strip()
+        post_date = news_feed['post_date']
         feeds_exist = False
-        news_feed_exist = NewsFeeds.query.filter_by(post_title=news_feed).first()
-        if news_feed_exist:
+        
+        news_feed_exist = NewsFeeds.query.filter_by(post_title=post_title, post_date=post_date).first()
+        if news_feed_exist is not None:
             feeds_exist = True
         return feeds_exist
 
@@ -74,7 +77,7 @@ class NewsSources(db.Model):
         source_name = news_feed['post_source_name'].strip()
         source_logo = news_feed['post_source_logo'].strip()
         source_exist = NewsSources.query.filter_by(logo=source_logo).first()
-        if source_exist:
+        if source_exist is not None:
             return source_exist.id
         # create a new source and return id
         source = NewsSources(name=source_name, logo=source_logo,
@@ -94,7 +97,7 @@ class NewsTags(db.Model):
     def get_news_tag_id_by_name(self, tag):
         tag_id = 0
         tag_exist = NewsTags.query.filter_by(name=tag).first()
-        if tag_exist:
+        if tag_exist is not None:
             tag_id = tag_exist.id
         return tag_id
 
