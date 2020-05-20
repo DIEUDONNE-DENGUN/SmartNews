@@ -2,5 +2,5 @@
 from smartnews import app
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(use_reloader=False)
     # use_reloader=False

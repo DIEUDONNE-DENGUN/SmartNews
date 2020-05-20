@@ -15,7 +15,7 @@ class NewsFeeds(db.Model):
     created_at = db.Column(db.DateTime, nullable=False,
                            default=datetime.utcnow)
 
-    def save_news_feeds(self, news_feed, country=1):
+    def save_news_feeds(self, news_feed, country):
         
         # check if we previously had a news with feeds by title
         news_feed_exist = self.news_feed_exist_by_name(news_feed['post_title'])

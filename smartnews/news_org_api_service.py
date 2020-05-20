@@ -28,13 +28,13 @@ class NewsOrgApiService:
         news_feeds_count = response['totalResults']
         if news_feeds_count > 0:
             # cconvert json data into python dict
-            api_news_feeds = json.loads(response['articles'])
+            api_news_feeds = response['articles']
             news_tags = [const.NEWS_ORG_API_CATEGORIES[0]]
             # loop through the dicts of news feeds
             for news_feed in api_news_feeds:
                 news_feed_object = jsons.dump(NewsFeed(news_feed, news_tags))
                 news_feeds_list.append(news_feed_object)
-                print(news_feed_object)
+                print(news_feed)
 
         return news_feeds_list
 

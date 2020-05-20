@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import csv
+from smartnews.models import NewsFeeds
 
 
 class WebCrawler:
@@ -197,16 +198,16 @@ class WebCrawler:
         self.build_trending_news()
         # Get and extract popular news
         self.build_posts_popular()
-        # save news crawled to csv
-        # self.save_daily_news_csv(source + '_news_headlines.csv')
 
     def get_all_news_scraped(self):
-        
+
         return self.daily_news_json_list
-    
-     
-# run webcrawler class
-# web_scrapper = WebCrawler()
-# web_scrapper.run_webcrawler_headlines() #news headlines from homepage
-# # web_scrapper.run_webcrawler_by_source('mmi') #mimimefo news headlines
-# web_scrapper.run_webcrawler_by_source('CNA') #CNA news headlines
+
+    # save all crawled news feeds to db
+    def save_all_news_db(self):
+        
+        news_feeds = self.get_all_news_scraped()
+        for news_feed in news_feeds:
+            news_feed_object = NewsFeeds()
+            news_feed_object.save_news_feeds(news_feed, 1)
+            # print(news_feed_saved)
