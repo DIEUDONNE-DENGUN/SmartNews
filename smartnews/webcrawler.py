@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import csv
-from smartnews.models import NewsFeeds
+from smartnews.news_feeds_service import NewsFeedService
 
 
 class WebCrawler:
@@ -208,6 +208,5 @@ class WebCrawler:
         
         news_feeds = self.get_all_news_scraped()
         for news_feed in news_feeds:
-            news_feed_object = NewsFeeds()
-            news_feed_object.save_news_feeds(news_feed, 1)
+            NewsFeedService().save_news_feeds(news_feed, 1)
             # print(news_feed_saved)
