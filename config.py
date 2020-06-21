@@ -8,6 +8,7 @@ SECRET_KEY = const.APP_SECRET_KEY
 # Database configurations
 SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://'+const.DB_USER +':'+const.DB_PASSWORD+'@'+ const.DB_HOST + ':' + const.DB_PORT +'/smart_news'
 
+SQLALCHEMY_TRACK_MODIFICATIONS = False
 # Set debug 
 DEBUG = True
 

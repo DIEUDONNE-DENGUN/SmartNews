@@ -2,18 +2,44 @@
 from datetime import datetime
 from smartnews import db
 from smartnews.models import NewsSources, NewsFeeds, NewsTags, NewsTagPivot
+from sqlalchemy.exc import IntegrityError
 
 
 class NewsFeedService:
     def __init__(self):
         pass
-    
+
     def save_news_feeds(self, news_feed, country):
           # check if we previously had a news with feeds by title
         news_feed_exist = self.news_feed_exist_by_name(news_feed)
         if news_feed_exist:
             return ""
         # News feed is a new one, save it and its details in the db
+        # set the country as property on the news feed distionary
+        news_feed['country'] = country
+        post_news_feed = self.generateNewsFeed(news_feed)
+        news_feed_status = 0
+        # save the news feed main data into db
+        try:
+            db.session.add(post_news_feed)
+            db.session.commit()
+            # Increment counter to indicate we have inserted a new data successfully
+            news_feed_status += 1
+        except IntegrityError:
+            db.session.rollback()
+            print(
+                'Duplicate entry detected, rollback status of database to ignore the exception')
+
+        # save the created news feed and its associated tags
+        if news_feed_status > 0:
+            self.save_news_tags_pivot(
+                post_news_feed.id, news_feed['post_tags'])
+            return "saved"
+        else:
+            return "Not Saved"
+
+    def generateNewsFeed(self, news_feed):
+
         post_news_feed = NewsFeeds()
         post_news_feed.post_title = news_feed['post_title'].strip()
         post_news_feed.post_image_url = news_feed['post_image']
@@ -21,15 +47,11 @@ class NewsFeedService:
         post_news_feed.post_url = news_feed['post_url']
         post_news_feed.post_source_id = self.get_news_source_id_by_name(
             news_feed)  # Find news_feed source by id
-        post_news_feed.post_country_id = country
+        post_news_feed.post_country_id = news_feed['country']
         post_news_feed.post_date = news_feed['post_date']
         post_news_feed.created_at = datetime.now()
-        # save the news feed main data
-        db.session.add(post_news_feed)
-        db.session.commit()
-        # save the created news feed and its associated tags
-        self.save_news_tags_pivot(post_news_feed.id, news_feed['post_tags'])
-        return "saved"
+
+        return post_news_feed
 
     def save_news_tags_pivot(self, news_id, news_tags):
         news_id = news_id

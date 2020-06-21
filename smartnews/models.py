@@ -5,8 +5,8 @@ from smartnews import db
 class NewsFeeds(db.Model):
     __tablename__ = "news_feeds"
     id = db.Column(db.Integer, primary_key=True)
-    post_title = db.Column(db.String(255), nullable=False)
-    post_image_url = db.Column(db.String(200), nullable=False)
+    post_title = db.Column(db.String(170), nullable=False,unique=True)
+    post_image_url = db.Column(db.Text, nullable=False)
     post_summary = db.Column(db.Text, nullable=False)
     post_source_id = db.Column(
         db.Integer, db.ForeignKey('news_sources.id'), nullable=False)
