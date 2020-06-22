@@ -8,6 +8,7 @@ NEWS_ORG_API_KEY = "902bf27e4c9540f6b851ad229e1457f0"
 NEWS_ORG_API_DEFAULT_COUNTRY = "us"
 NEWS_ORG_API_CATEGORIES = ["general", "business",
                            "entertainment", "health", "sports", "science", "technology"]
+API_PREFIX_1 = "api/v1"
 DB_HOST = "localhost"
 DB_PORT = "3306"
 DB_USER = "root"

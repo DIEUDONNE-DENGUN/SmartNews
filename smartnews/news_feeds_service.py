@@ -1,4 +1,3 @@
-
 from datetime import datetime
 from smartnews import db
 from smartnews.models import NewsSources, NewsFeeds, NewsTags, NewsTagPivot
@@ -10,7 +9,7 @@ class NewsFeedService:
         pass
 
     def save_news_feeds(self, news_feed, country):
-          # check if we previously had a news with feeds by title
+        # check if we previously had a news with feeds by title
         news_feed_exist = self.news_feed_exist_by_name(news_feed)
         if news_feed_exist:
             return ""
@@ -102,7 +101,7 @@ class NewsFeedService:
         return tag_id
 
     def save_news_feed_tags(self, news_tags):
-         # Save list of tags  and retun ids
+        # Save list of tags  and retun ids
         tag_list_ids = []
         for tag in news_tags:
             # check if tag exist, return it or create a new one
@@ -117,3 +116,34 @@ class NewsFeedService:
                 tag_list_ids.append(new_tag.id)
 
         return tag_list_ids
+
+    @staticmethod
+    def get_news_feeds(current_page):
+        news_feed_query = NewsFeeds.query.paginate(
+            page=int(current_page), error_out=False, max_per_page=20)
+        return news_feed_query.items
+
+    @staticmethod
+    def get_news_feed_item_by_id(news_feed_id):
+        news_feed_query = NewsFeeds.query.filter_by(id=news_feed_id).first()
+        return news_feed_query
+
+    @staticmethod
+    def get_news_feeds_by_country(country_id, current_page):
+        news_feeds_query = NewsFeeds.query.filter_by(post_country_id=country_id).paginate(page=int(current_page),
+                                                                                          error_out=False,
+                                                                                          max_per_page=20)
+        return news_feeds_query.items
+
+    @staticmethod
+    def get_news_feed_tags_by_id(news_feed_id):
+        news_feed_tag_ids = NewsTagPivot.query.filter_by(
+            news_id=news_feed_id).all()
+        tag_list = []
+        for tag in news_feed_tag_ids:
+            tag_list.append(tag.tag_id)
+        tags = NewsTags.query.filter(NewsTags.id.in_(tag_list)).all()
+        tags_dic = []
+        for tag in tags:
+            tags_dic.append({'name': tag.name})
+        return tags_dic

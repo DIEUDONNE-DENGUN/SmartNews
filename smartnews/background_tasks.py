@@ -34,9 +34,9 @@ job_store_url = app.config['SQLALCHEMY_DATABASE_URI']
 scheduler.add_jobstore('sqlalchemy', url=job_store_url)
 
 # add web crawling news task to scheduler
-# scheduler.add_job(run_webcrawler, 'interval', minutes=5)
+scheduler.add_job(run_webcrawler, 'interval', minutes=2)
 # add an another job to start getting news feeds from newsorg
-scheduler.add_job(get_news_from_news_api, 'interval', minutes=2)
+scheduler.add_job(get_news_from_news_api, 'interval', minutes=30)
 # start scheduler
 scheduler.start()
 # Shut down the scheduler when exiting the app
