@@ -1,4 +1,3 @@
-from smartnews.apis.news_feeds_ns import news_feeds_ns as ns1
 from flask import Blueprint
 from flask_restx import Api
 from smartnews.const import API_PREFIX_1
@@ -13,4 +12,5 @@ api_v1 = Api(blueprint,
              )
 
 # add api namesaces to the Main APi object
+from smartnews.apis.news_feeds_ns import news_feeds_ns as ns1
 api_v1.add_namespace(ns1)
