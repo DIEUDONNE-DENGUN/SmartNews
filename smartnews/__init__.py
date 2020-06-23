@@ -11,17 +11,14 @@ app.config.from_object('config')
 # create database ORM instance
 db = SQLAlchemy(app)
 
-# set api route initiallization
-api = Api(app,
-          title='News Feeds Aggregator restful api service',
-          version='1.0',
-          description='Api for providing news feeds from smart news'
-          )
+# set api route blueprint initiallization 
+from smartnews.apis import blueprint as api_v1
+app.register_blueprint(api_v1)
 
 # initiate and run all background cron tasks to pull news from news api and crawler
 from smartnews import background_tasks
 # import api initialized routes
-from smartnews import routes
+from smartnews import web_routes
 
 
 

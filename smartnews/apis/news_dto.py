@@ -1,9 +1,10 @@
 from flask_restx import Namespace, fields
-from smartnews import api
-from smartnews import const
+from smartnews.apis import api_v1
 from smartnews.news_feeds_service import NewsFeedService
 
 # Custom dto to pull all associated tags for each news feed
+
+
 class NewsTagsDto(fields.Raw):
     def format(self, feed_id):
         news_feed_tags = NewsFeedService.get_news_feed_tags_by_id(feed_id)
@@ -11,9 +12,9 @@ class NewsTagsDto(fields.Raw):
 
 
 class NewsFeedDto:
-    ns = api.namespace(const.API_PREFIX_1 + '/news_feeds',
-                       description='News Feeds related operations')
-    news_feeds = api.model('NewsFeeds', {
+    ns = api_v1.namespace('news_feeds',
+                          description='News Feeds related operations')
+    news_feeds = api_v1.model('NewsFeeds', {
         'title': fields.String(required=True, attribute='post_title', description='news feed title'),
         'feature_image_url': fields.String(required=True, attribute='post_image_url',
                                            description='news feed feature image url'),
